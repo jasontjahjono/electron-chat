@@ -1,5 +1,7 @@
 // Main Process
-const { app, BrowserWindow, Notification } = require("electron");
+const { app, BrowserWindow, ipcMain, Notification } = require("electron");
+const path = require("path");
+const isDev = !app.isPackaged;
 
 function createWindow() {
   // Browser Window -> Renderer Process
@@ -8,24 +10,28 @@ function createWindow() {
     height: 600,
     backgroundColor: "white",
     webPreferences: {
-      nodeIntegration: true,
+      nodeIntegration: false,
+      // contextIsolation is a feature that ensures that both
+      // preload scripts and Electrons internal logic run in
+      // separate context
+      contextIsolation: true,
+      preload: path.join(__dirname, "preload.js"),
     },
   });
 
   win.loadFile("index.html");
 
   // open dev tools
-  win.webContents.openDevTools();
+  isDev && win.webContents.openDevTools();
 }
 
-app.whenReady().then(() => {
-  createWindow();
-  const notification = new Notification({
-    title: "Hello World",
-    body: "This is a test message",
+if (isDev) {
+  require("electron-reload")(__dirname, {
+    electron: path.join(__dirname, "node_modules", ".bin", "electron"),
   });
-  notification.show();
-});
+}
+
+app.whenReady().then(createWindow);
 
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
@@ -38,3 +44,12 @@ app.on("activate", () => {
     createWindow();
   }
 });
+
+ipcMain.on("notify", (_, message) => {
+  new Notification({ title: "Custom Notif", body: message }).show();
+});
+
+// Webpack -> is a module builder to bundle JS files for usage
+// in the browser
+
+// Babel -> is a JS compiler
