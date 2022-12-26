@@ -10,6 +10,7 @@
   "author": "Jason Tjahjono",
   "license": "ISC",
   "devDependencies": {
+    "dotenv-webpack": "^8.0.1",
     "electron": "^22.0.0",
     "electron-reload": "^2.0.0-alpha.1"
   },
@@ -19,6 +20,7 @@
     "babel-loader": "^9.1.0",
     "bootstrap": "^5.2.3",
     "css-loader": "^6.7.3",
+    "firebase": "^9.15.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.6.0",

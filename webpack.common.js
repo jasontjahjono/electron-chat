@@ -1,10 +1,11 @@
 const path = require("path");
+const Dotenv = require("dotenv-webpack");
 
 module.exports = {
   mode: "development",
   entry: "./src/js/index.js",
   devtool: "inline-source-map",
-  target: "electron-renderer",
+  target: "web",
   module: {
     rules: [
       {
@@ -40,7 +41,7 @@ module.exports = {
       },
     ],
   },
-  plugins: [],
+  plugins: [new Dotenv()],
   resolve: {
     extensions: [".js"],
   },
