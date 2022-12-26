@@ -3,9 +3,8 @@ import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 
 import HomeView from "./views/Home";
-import LoginView from "./views/Login";
+import WelcomeView from "./views/Welcome";
 import SettingsView from "./views/Settings";
-import RegisterView from "./views/Register";
 import ChatView from "./views/Chat";
 
 import { Provider } from "react-redux";
@@ -18,11 +17,10 @@ const App = () => {
         <Navbar />
         <div className="content-wrapper">
           <Routes>
+            <Route path="/" element={<WelcomeView />} exact />
             <Route path="/settings" element={<SettingsView />} exact />
-            <Route path="/register" element={<RegisterView />} exact />
-            <Route path="/login" element={<LoginView />} exact />
             <Route path="/chat/:id" element={<ChatView />} exact />
-            <Route path="/" element={<HomeView />} exact />
+            <Route path="/home" element={<HomeView />} exact />
           </Routes>
         </div>
       </Router>
