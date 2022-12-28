@@ -6,7 +6,7 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import db from "../db/firestore";
-import { setDoc, doc } from "firebase/firestore";
+import { setDoc, doc, getDoc } from "firebase/firestore";
 
 const createUserProfile = async (userProfile) => {
   await setDoc(doc(db, "profiles", userProfile.uid), userProfile);
@@ -42,4 +42,18 @@ export const logout = () => {
 export const login = ({ email, password }) => {
   const auth = getAuth();
   return signInWithEmailAndPassword(auth, email, password);
+};
+
+export const getUserProfile = async (uid) => {
+  try {
+    const profile = await getDoc(doc(db, "profiles", uid));
+    if (profile.exists()) {
+      return profile.data();
+    } else {
+      console.log("Document does not exist");
+      return null;
+    }
+  } catch (err) {
+    console.log(err);
+  }
 };
