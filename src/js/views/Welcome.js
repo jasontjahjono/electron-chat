@@ -3,6 +3,7 @@ import LoginForm from "../components/LoginForm";
 import RegisterForm from "../components/RegisterForm";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import Loading from "../components/shared/Loading";
 
 const Welcome = () => {
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ const Welcome = () => {
   }, [user]);
 
   if (isChecking) {
-    return <h1>Checking for state...</h1>;
+    return <Loading />;
   }
 
   const optInText = isLoginView
