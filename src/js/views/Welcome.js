@@ -1,9 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import LoginForm from "../components/LoginForm";
 import RegisterForm from "../components/RegisterForm";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Welcome = () => {
+  const navigate = useNavigate();
+
   const [isLoginView, setIsLoginView] = useState(true);
+  const user = useSelector(({ auth }) => auth.user);
+  const isChecking = useSelector(({ auth }) => auth.isChecking);
+
+  console.log(user);
+  useEffect(() => {
+    if (user) {
+      navigate("/home");
+    }
+  }, [user]);
+
+  if (isChecking) {
+    return <h1>Checking for state...</h1>;
+  }
 
   const optInText = isLoginView
     ? ["Need an account?", "Register"]

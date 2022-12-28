@@ -1,4 +1,8 @@
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+} from "firebase/auth";
 import db from "../db/firestore";
 import { setDoc, doc } from "firebase/firestore";
 
@@ -21,4 +25,9 @@ export const register = async ({ email, password, username, avatar }) => {
     .catch((err) => {
       Promise.reject(err.message);
     });
+};
+
+export const onAuthStateChanges = (onAuth) => {
+  const auth = getAuth();
+  onAuthStateChanged(auth, onAuth);
 };
