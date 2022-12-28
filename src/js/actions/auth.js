@@ -16,3 +16,11 @@ export const listenToAuthChanges = () => (dispatch) => {
     }
   });
 };
+
+export const logout = () => (dispatch) => {
+  api.logout().then((_) => dispatch({ type: "AUTH_LOGOUT_SUCCESS" }));
+};
+
+export const loginUser = (formData) => (dispatch) => {
+  api.login(formData).then((_) => dispatch({ type: "AUTH_LOGIN_SUCCESS" }));
+};
