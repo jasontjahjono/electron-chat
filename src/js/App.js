@@ -1,5 +1,10 @@
 import React, { useEffect } from "react";
-import { HashRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  HashRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import Navbar from "./components/Navbar";
 
 import HomeView from "./views/Home";
@@ -11,6 +16,11 @@ import StoreProvider from "./store/StoreProvider";
 import { useDispatch, useSelector } from "react-redux";
 import { listenToAuthChanges } from "./actions/auth";
 import Loading from "./components/shared/Loading";
+
+const RequireAuth = ({ children }) => {
+  const user = useSelector(({ auth }) => auth.user);
+  return user ? children : <Navigate to="/" />;
+};
 
 const ChatApp = () => {
   const dispatch = useDispatch();
@@ -29,9 +39,33 @@ const ChatApp = () => {
       <div className="content-wrapper">
         <Routes>
           <Route path="/" element={<WelcomeView />} exact />
-          <Route path="/settings" element={<SettingsView />} exact />
-          <Route path="/chat/:id" element={<ChatView />} exact />
-          <Route path="/home" element={<HomeView />} exact />
+          <Route
+            path="/settings"
+            element={
+              <RequireAuth>
+                <SettingsView />
+              </RequireAuth>
+            }
+            exact
+          />
+          <Route
+            path="/chat/:id"
+            element={
+              <RequireAuth>
+                <ChatView />
+              </RequireAuth>
+            }
+            exact
+          />
+          <Route
+            path="/home"
+            element={
+              <RequireAuth>
+                <HomeView />
+              </RequireAuth>
+            }
+            exact
+          />
         </Routes>
       </div>
     </Router>
