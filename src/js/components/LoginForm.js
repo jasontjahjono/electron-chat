@@ -2,11 +2,17 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../actions/auth";
+import Loading from "./shared/Loading";
 
 const LoginForm = () => {
   const { register, handleSubmit } = useForm();
   const dispatch = useDispatch();
   const error = useSelector(({ auth }) => auth.login.error);
+  const isChecking = useSelector(({ auth }) => auth.login.isChecking);
+
+  if (isChecking) {
+    return <Loading />;
+  }
 
   const onSubmit = (data) => {
     console.log("Logging in");

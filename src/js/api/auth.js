@@ -14,19 +14,14 @@ const createUserProfile = async (userProfile) => {
 
 export const register = async ({ email, password, username, avatar }) => {
   const auth = getAuth();
-  createUserWithEmailAndPassword(auth, email, password)
-    .then(({ user }) => {
-      createUserProfile({
-        uid: user.uid,
-        username,
-        email,
-        avatar,
-        joinedChats: [],
-      });
-    })
-    .catch((err) => {
-      Promise.reject(err.message);
-    });
+  const { user } = await createUserWithEmailAndPassword(auth, email, password);
+  await createUserProfile({
+    uid: user.uid,
+    username,
+    email,
+    avatar,
+    joinedChats: [],
+  });
 };
 
 export const onAuthStateChanges = (onAuth) => {

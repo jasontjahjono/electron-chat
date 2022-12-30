@@ -1,34 +1,17 @@
 import { combineReducers } from "redux";
+import { createErrorReducer, createIsCheckingReducer } from "./common";
 
-const createLoginReducer = () => {
-  const error = (state = null, action) => {
-    switch (action.type) {
-      case "AUTH_LOGIN_INIT":
-        return null;
-      case "AUTH_LOGIN_ERROR":
-        return action.error;
-      default:
-        return state;
-    }
-  };
+const createLoginReducer = () =>
+  combineReducers({
+    isChecking: createIsCheckingReducer("AUTH_LOGIN"),
+    error: createErrorReducer("AUTH_LOGIN"),
+  });
 
-  return combineReducers({ error });
-};
-
-const createRegisterReducer = () => {
-  const error = (state = null, action) => {
-    switch (action.type) {
-      case "AUTH_REGISTER_INIT":
-        return null;
-      case "AUTH_REGISTER_ERROR":
-        return action.error;
-      default:
-        return state;
-    }
-  };
-
-  return combineReducers({ error });
-};
+const createRegisterReducer = () =>
+  combineReducers({
+    isChecking: createIsCheckingReducer("AUTH_REGISTER"),
+    error: createErrorReducer("AUTH_REGISTER"),
+  });
 
 const createAuthReducer = () => {
   const user = (state = null, action) => {
@@ -36,6 +19,7 @@ const createAuthReducer = () => {
       case "AUTH_ON_ERROR":
       case "AUTH_ON_INIT":
         return null;
+      case "AUTH_LOGIN_SUCCESS":
       case "AUTH_ON_SUCCESS":
         return action.user;
       default: {
@@ -44,26 +28,9 @@ const createAuthReducer = () => {
     }
   };
 
-  const isChecking = (state = false, action) => {
-    switch (action.type) {
-      case "AUTH_LOGIN_INIT":
-      case "AUTH_REGISTER_INIT":
-      case "AUTH_ON_INIT":
-        return true;
-      case "AUTH_ON_ERROR":
-      case "AUTH_ON_SUCCESS":
-      case "AUTH_LOGIN_ERROR":
-      case "AUTH_REGISTER_ERROR":
-        return false;
-      default: {
-        return state;
-      }
-    }
-  };
-
   return combineReducers({
     user,
-    isChecking,
+    isChecking: createIsCheckingReducer("AUTH_ON"),
     login: createLoginReducer(),
     register: createRegisterReducer(),
   });
