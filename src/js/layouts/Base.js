@@ -1,13 +1,18 @@
 import React from "react";
 import Navbar from "../components/Navbar";
 
-const BaseLayout = ({ children, ...props }) => {
+const getDisplayName = (Component) => {
+  return Component.displayName || Component.name || "Component";
+};
+
+const withBaseLayout = (Component, config) => (props) => {
+  const viewName = getDisplayName(Component);
   return (
     <>
-      <Navbar {...props} />
-      {children}
+      <Navbar {...config} view={viewName} />
+      <Component {...props} />
     </>
   );
 };
 
-export default BaseLayout;
+export default withBaseLayout;

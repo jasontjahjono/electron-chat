@@ -1,11 +1,10 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../actions/auth";
 import BackButton from "./shared/BackButton";
 
-const Navbar = ({ canGoBack }) => {
-  const navigate = useNavigate();
+const Navbar = ({ canGoBack, view }) => {
   const dispatch = useDispatch();
   const user = useSelector(({ auth }) => auth.user);
   return (
@@ -13,9 +12,11 @@ const Navbar = ({ canGoBack }) => {
       <nav className="chat-navbar-inner">
         <div className="chat-navbar-inner-left">
           {canGoBack && <BackButton />}
-          <Link to="/settings" className="btn btn-outline-success ml-2">
-            Settings
-          </Link>
+          {view !== "Settings" && (
+            <Link to="/settings" className="btn btn-outline-success ml-2">
+              Settings
+            </Link>
+          )}
         </div>
         <div className="chat-navbar-inner-right">
           {user && (

@@ -15,13 +15,15 @@ const createUserProfile = async (userProfile) => {
 export const register = async ({ email, password, username, avatar }) => {
   const auth = getAuth();
   const { user } = await createUserWithEmailAndPassword(auth, email, password);
-  await createUserProfile({
+  const userProfile = {
     uid: user.uid,
     username,
     email,
     avatar,
     joinedChats: [],
-  });
+  };
+  await createUserProfile(userProfile);
+  return userProfile;
 };
 
 export const onAuthStateChanges = (onAuth) => {
@@ -34,9 +36,11 @@ export const logout = () => {
   return signOut(auth);
 };
 
-export const login = ({ email, password }) => {
+export const login = async ({ email, password }) => {
   const auth = getAuth();
-  return signInWithEmailAndPassword(auth, email, password);
+  const { user } = await signInWithEmailAndPassword(auth, email, password);
+  const userProfile = await getUserProfile(user.uid);
+  return userProfile;
 };
 
 export const getUserProfile = async (uid) => {
