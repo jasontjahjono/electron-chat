@@ -6,30 +6,43 @@ import HomeView from "./views/Home";
 import WelcomeView from "./views/Welcome";
 import SettingsView from "./views/Settings";
 import ChatView from "./views/Chat";
+import StoreProvider from "./store/StoreProvider";
 
-import { Provider } from "react-redux";
-import store from "./store";
+import { useDispatch, useSelector } from "react-redux";
 import { listenToAuthChanges } from "./actions/auth";
+import Loading from "./components/shared/Loading";
+
+const ChatApp = () => {
+  const dispatch = useDispatch();
+  const isChecking = useSelector(({ auth }) => auth.isChecking);
+
+  useEffect(() => {
+    dispatch(listenToAuthChanges());
+  }, [dispatch]);
+
+  if (isChecking) {
+    return <Loading />;
+  }
+  return (
+    <Router>
+      <Navbar />
+      <div className="content-wrapper">
+        <Routes>
+          <Route path="/" element={<WelcomeView />} exact />
+          <Route path="/settings" element={<SettingsView />} exact />
+          <Route path="/chat/:id" element={<ChatView />} exact />
+          <Route path="/home" element={<HomeView />} exact />
+        </Routes>
+      </div>
+    </Router>
+  );
+};
 
 const App = () => {
-  useEffect(() => {
-    store.dispatch(listenToAuthChanges());
-  }, []);
-
   return (
-    <Provider store={store}>
-      <Router>
-        <Navbar />
-        <div className="content-wrapper">
-          <Routes>
-            <Route path="/" element={<WelcomeView />} exact />
-            <Route path="/settings" element={<SettingsView />} exact />
-            <Route path="/chat/:id" element={<ChatView />} exact />
-            <Route path="/home" element={<HomeView />} exact />
-          </Routes>
-        </div>
-      </Router>
-    </Provider>
+    <StoreProvider>
+      <ChatApp />
+    </StoreProvider>
   );
 };
 
