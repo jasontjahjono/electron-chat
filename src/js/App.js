@@ -5,7 +5,6 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import Navbar from "./components/Navbar";
 
 import HomeView from "./views/Home";
 import WelcomeView from "./views/Welcome";
@@ -35,7 +34,6 @@ const ChatApp = () => {
   }
   return (
     <Router>
-      <Navbar />
       <div className="content-wrapper">
         <Routes>
           <Route path="/" element={<WelcomeView />} exact />
