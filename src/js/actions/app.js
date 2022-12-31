@@ -6,7 +6,7 @@ const onStatusChange = (dispatch) => {
   dispatch(action);
 };
 
-export const listenToConnectionChanges = () => (dispath) => {
+export const listenToConnectionChanges = () => (dispatch) => {
   const connectionHandler = onStatusChange(dispatch);
   window.addEventListener("online", connectionHandler);
   window.addEventListener("offline", connectionHandler);
