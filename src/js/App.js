@@ -15,6 +15,7 @@ import StoreProvider from "./store/StoreProvider";
 import { useDispatch, useSelector } from "react-redux";
 import { listenToAuthChanges } from "./actions/auth";
 import Loading from "./components/shared/Loading";
+import { listenToConnectionChanges } from "./actions/app";
 
 const RequireAuth = ({ children }) => {
   const user = useSelector(({ auth }) => auth.user);
@@ -30,10 +31,14 @@ const ChatApp = () => {
   };
 
   useEffect(() => {
-    dispatch(listenToAuthChanges());
+    const unsubAuth = dispatch(listenToAuthChanges());
 
-    window.addEventListener("online", alertOnlineStatus);
-    window.addEventListener("offline", alertOnlineStatus);
+    const unsubConnection = dispatch(listenToConnectionChanges());
+
+    return () => {
+      unsubAuth();
+      unsubConnection();
+    };
   }, [dispatch]);
 
   if (isChecking) {

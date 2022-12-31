@@ -10,7 +10,7 @@ export const registerUser = (formData) => (dispatch) => {
 
 export const listenToAuthChanges = () => (dispatch) => {
   dispatch({ type: "AUTH_ON_INIT" });
-  api.onAuthStateChanges(async (user) => {
+  return api.onAuthStateChanges(async (user) => {
     if (user) {
       const userProfile = await api.getUserProfile(user.uid);
       dispatch({ type: "AUTH_ON_SUCCESS", user: userProfile });
