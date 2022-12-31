@@ -25,8 +25,15 @@ const ChatApp = () => {
   const dispatch = useDispatch();
   const isChecking = useSelector(({ auth }) => auth.isChecking);
 
+  const alertOnlineStatus = () => {
+    window.alert(navigator.onLine ? "online" : "offline");
+  };
+
   useEffect(() => {
     dispatch(listenToAuthChanges());
+
+    window.addEventListener("online", alertOnlineStatus);
+    window.addEventListener("offline", alertOnlineStatus);
   }, [dispatch]);
 
   if (isChecking) {
