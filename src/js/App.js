@@ -25,16 +25,11 @@ const RequireAuth = ({ children }) => {
 const ChatApp = () => {
   const dispatch = useDispatch();
   const isChecking = useSelector(({ auth }) => auth.isChecking);
-
-  const alertOnlineStatus = () => {
-    window.alert(navigator.onLine ? "online" : "offline");
-  };
+  const isOnline = useSelector(({ app }) => app.isOnline);
 
   useEffect(() => {
     const unsubAuth = dispatch(listenToAuthChanges());
-
     const unsubConnection = dispatch(listenToConnectionChanges());
-
     return () => {
       unsubAuth();
       unsubConnection();
@@ -44,6 +39,13 @@ const ChatApp = () => {
   if (isChecking) {
     return <Loading />;
   }
+
+  if (!isOnline) {
+    return (
+      <Loading message="Application has been disconnected from the internet. Please reconnect..." />
+    );
+  }
+
   return (
     <Router>
       <div className="content-wrapper">
