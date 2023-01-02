@@ -1,6 +1,9 @@
 import React from "react";
 import withBaseLayout from "../layouts/Base";
 import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { createChat } from "../actions/chats";
+import { useNavigate } from "react-router-dom";
 
 // FORM FORMAT
 // name -> input
@@ -9,9 +12,12 @@ import { useForm } from "react-hook-form";
 
 const ChatCreateView = () => {
   const { register, handleSubmit } = useForm();
+  const user = useSelector(({ auth }) => auth.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const onSubmit = (data) => {
-    alert(JSON.stringify(data));
+    dispatch(createChat(data, user.uid)).then((_) => navigate("/home"));
   };
 
   return (
