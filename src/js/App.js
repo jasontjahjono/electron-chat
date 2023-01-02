@@ -10,6 +10,7 @@ import HomeView from "./views/Home";
 import WelcomeView from "./views/Welcome";
 import SettingsView from "./views/Settings";
 import ChatView from "./views/Chat";
+import ChatCreateView from "./views/ChatCreate";
 import StoreProvider from "./store/StoreProvider";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -74,6 +75,15 @@ const ChatApp = () => {
             element={
               <RequireAuth>
                 <HomeView />
+              </RequireAuth>
+            }
+            exact
+          />
+          <Route
+            path="/chatCreate"
+            element={
+              <RequireAuth>
+                <ChatCreateView />
               </RequireAuth>
             }
             exact
