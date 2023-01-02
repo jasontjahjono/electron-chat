@@ -15,7 +15,6 @@ const LoginForm = () => {
   }
 
   const onSubmit = (data) => {
-    console.log("Logging in");
     dispatch(loginUser(data));
   };
 
