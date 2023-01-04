@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { listenToAuthChanges } from "./actions/auth";
 import Loading from "./components/shared/Loading";
 import { listenToConnectionChanges } from "./actions/app";
+import { checkUserConnection } from "./actions/connection";
 
 const RequireAuth = ({ children }) => {
   const user = useSelector(({ auth }) => auth.user);
@@ -31,9 +32,11 @@ const ChatApp = () => {
   useEffect(() => {
     const unsubAuth = dispatch(listenToAuthChanges());
     const unsubConnection = dispatch(listenToConnectionChanges());
+    const unsubFromUserConnection = dispatch(checkUserConnection());
     return () => {
       unsubAuth();
       unsubConnection();
+      unsubFromUserConnection();
     };
   }, [dispatch]);
 
