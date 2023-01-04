@@ -31,10 +31,22 @@ const createChatReducer = () => {
   };
 
   const activeChats = createReducer({}, (builder) =>
-    builder.addCase("CHATS_SET_ACTIVE_CHAT", (state, action) => {
-      const { chat } = action;
-      state[chat.id] = chat;
-    })
+    builder
+      .addCase("CHATS_SET_ACTIVE_CHAT", (state, action) => {
+        const { chat } = action;
+        state[chat.id] = chat;
+      })
+      .addCase("CHATS_UPDATE_USER_STATE", (state, action) => {
+        const { user, chatId } = action;
+        const joinedUsers = state[chatId].joinedUsers;
+        const index = joinedUsers.findIndex((ju) => ju.uid === user.uid);
+
+        if (index < 0 || joinedUsers[index].state === user.state) {
+          return state;
+        } else {
+          joinedUsers[index].state = user.state;
+        }
+      })
   );
 
   return combineReducers({ joined, available, activeChats });

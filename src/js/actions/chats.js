@@ -54,7 +54,7 @@ export const subscribeToChat = (chatId) => (dispatch) =>
     dispatch({ type: "CHATS_SET_ACTIVE_CHAT", chat });
   });
 
-export const subscribeToProfile = (userId) => (dispatch) =>
+export const subscribeToProfile = (userId, chatId) => (dispatch) =>
   api.subscribeToProfile(userId, (user) => {
-    dispatch({ type: "CHATS_UPDATE_USER_STATE", user });
+    dispatch({ type: "CHATS_UPDATE_USER_STATE", user, chatId });
   });

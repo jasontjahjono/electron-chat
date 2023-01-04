@@ -29,7 +29,9 @@ const ChatView = () => {
   const subscribeToJoinedUsers = (users) => {
     users.forEach((user) => {
       if (!userWatchers.current[user.uid]) {
-        userWatchers.current[user.uid] = dispatch(subscribeToProfile(user.uid));
+        userWatchers.current[user.uid] = dispatch(
+          subscribeToProfile(user.uid, id)
+        );
       }
     });
   };
