@@ -7,6 +7,7 @@ import {
   doc,
   arrayUnion,
   getDoc,
+  onSnapshot,
 } from "firebase/firestore";
 
 export const fetchChats = async () => {
@@ -36,7 +37,10 @@ export const joinChat = async (userId, chatId) => {
   });
 };
 
-export const subscribeToChat = async (chatId) => {
-  const chat = await getDoc(doc(db, "chats", chatId));
-  return { id: chatId, ...chat.data() };
-};
+export const subscribeToChat = (chatId, onSubscribe) =>
+  onSnapshot(doc(db, "chats", chatId), (chat) =>
+    onSubscribe({ id: chatId, ...chat.data() })
+  );
+
+export const subscribeToProfile = (userId, onSubscribe) =>
+  onSnapshot(doc(db, "profiles", userId), (user) => onSubscribe(user.data()));

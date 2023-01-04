@@ -42,14 +42,19 @@ export const joinChat = (chat, userId) => (dispatch) => {
   });
 };
 
-export const subscribeToChat = (chatId) => async (dispatch) => {
-  const chat = await api.subscribeToChat(chatId);
-  const joinedUsers = await Promise.all(
-    chat.joinedUsers.map(async (userRef) => {
-      const userSnap = await getDoc(userRef);
-      return userSnap.data();
-    })
-  );
-  chat.joinedUsers = joinedUsers;
-  return dispatch({ type: "CHATS_SET_ACTIVE_CHAT", chat });
-};
+export const subscribeToChat = (chatId) => (dispatch) =>
+  api.subscribeToChat(chatId, async (chat) => {
+    const joinedUsers = await Promise.all(
+      chat.joinedUsers.map(async (userRef) => {
+        const userSnap = await getDoc(userRef);
+        return userSnap.data();
+      })
+    );
+    chat.joinedUsers = joinedUsers;
+    dispatch({ type: "CHATS_SET_ACTIVE_CHAT", chat });
+  });
+
+export const subscribeToProfile = (userId) => (dispatch) =>
+  api.subscribeToProfile(userId, (user) => {
+    dispatch({ type: "CHATS_UPDATE_USER_STATE", user });
+  });
