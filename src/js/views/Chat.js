@@ -12,8 +12,6 @@ const ChatView = () => {
   const dispatch = useDispatch();
   const activeChat = useSelector(({ chats }) => chats.activeChats[id]);
 
-  console.log(activeChat);
-
   useEffect(() => {
     const unsubFromChat = dispatch(subscribeToChat(id));
     return () => {
@@ -24,10 +22,10 @@ const ChatView = () => {
   return (
     <div className="row no-gutters fh">
       <div className="col-3 fh">
-        <ChatUsersList />
+        <ChatUsersList users={activeChat?.joinedUsers} />
       </div>
       <div className="col-9 fh">
-        <ViewTitle text={`Joined Channel: ${id}`} />
+        <ViewTitle text={`Joined Channel: ${activeChat?.name}`} />
         <ChatMessagesList />
       </div>
     </div>
