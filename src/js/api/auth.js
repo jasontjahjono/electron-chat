@@ -7,6 +7,7 @@ import {
 } from "firebase/auth";
 import db from "../db/firestore";
 import { setDoc, doc, getDoc } from "firebase/firestore";
+import { onConnectionChanged, setUserOnlineStatus } from "./connection";
 
 const createUserProfile = async (userProfile) => {
   await setDoc(doc(db, "profiles", userProfile.uid), userProfile);
@@ -33,6 +34,9 @@ export const onAuthStateChanges = (onAuth) => {
 
 export const logout = () => {
   const auth = getAuth();
+  onConnectionChanged((_) => {
+    setUserOnlineStatus(auth.currentUser.uid, false);
+  });
   return signOut(auth);
 };
 

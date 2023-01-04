@@ -23,6 +23,7 @@ export const listenToAuthChanges = () => (dispatch) => {
 export const logout = () => (dispatch) => {
   api.logout().then((_) => {
     dispatch({ type: "AUTH_LOGOUT_SUCCESS" });
+    dispatch({ type: "CONNECTION_USER_STATUS_CHANGED" });
     dispatch({ type: "CHATS_FETCH_RESTART" });
   });
 };

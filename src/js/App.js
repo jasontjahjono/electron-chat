@@ -28,17 +28,26 @@ const ChatApp = () => {
   const dispatch = useDispatch();
   const isChecking = useSelector(({ auth }) => auth.isChecking);
   const isOnline = useSelector(({ app }) => app.isOnline);
+  const user = useSelector(({ auth }) => auth.user);
 
   useEffect(() => {
     const unsubAuth = dispatch(listenToAuthChanges());
     const unsubConnection = dispatch(listenToConnectionChanges());
-    const unsubFromUserConnection = dispatch(checkUserConnection());
     return () => {
       unsubAuth();
       unsubConnection();
-      unsubFromUserConnection();
     };
   }, [dispatch]);
+
+  useEffect(() => {
+    let unsubFromUserConnection = () => {};
+    if (user?.uid) {
+      unsubFromUserConnection = dispatch(checkUserConnection(user.uid));
+    }
+    return () => {
+      unsubFromUserConnection();
+    };
+  }, [dispatch, user]);
 
   if (isChecking) {
     return <Loading />;
