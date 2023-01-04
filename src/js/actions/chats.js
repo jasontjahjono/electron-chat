@@ -1,4 +1,4 @@
-import { doc } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import * as api from "../api/chats";
 import db from "../db/firestore";
 
@@ -40,4 +40,16 @@ export const joinChat = (chat, userId) => (dispatch) => {
   api.joinChat(userId, chat.id).then((_) => {
     dispatch({ type: "CHATS_JOIN_SUCCESS", chat });
   });
+};
+
+export const subscribeToChat = (chatId) => async (dispatch) => {
+  const chat = await api.subscribeToChat(chatId);
+  const joinedUsers = await Promise.all(
+    chat.joinedUsers.map(async (userRef) => {
+      const userSnap = await getDoc(userRef);
+      return userSnap.data();
+    })
+  );
+  chat.joinedUsers = joinedUsers;
+  return dispatch({ type: "CHATS_SET_ACTIVE_CHAT", chat });
 };

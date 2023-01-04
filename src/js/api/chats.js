@@ -6,6 +6,7 @@ import {
   updateDoc,
   doc,
   arrayUnion,
+  getDoc,
 } from "firebase/firestore";
 
 export const fetchChats = async () => {
@@ -33,4 +34,9 @@ export const joinChat = async (userId, chatId) => {
   await updateDoc(chatRef, {
     joinedUsers: arrayUnion(userRef),
   });
+};
+
+export const subscribeToChat = async (chatId) => {
+  const chat = await getDoc(doc(db, "chats", chatId));
+  return { id: chatId, ...chat.data() };
 };

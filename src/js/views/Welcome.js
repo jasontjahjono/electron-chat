@@ -10,7 +10,6 @@ const Welcome = () => {
   const [isLoginView, setIsLoginView] = useState(true);
   const user = useSelector(({ auth }) => auth.user);
 
-  console.log(user);
   useEffect(() => {
     if (user) {
       navigate("/home");
