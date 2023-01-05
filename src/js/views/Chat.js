@@ -7,6 +7,7 @@ import withBaseLayout from "../layouts/Base";
 import { useDispatch, useSelector } from "react-redux";
 import { subscribeToChat, subscribeToProfile } from "../actions/chats";
 import Loading from "../components/shared/Loading";
+import Messenger from "../components/Messenger";
 
 const ChatView = () => {
   const { id } = useParams();
@@ -50,6 +51,10 @@ const ChatView = () => {
     return <Loading message="Loading Chat" />;
   }
 
+  const sendMessage = (message) => {
+    alert(message);
+  };
+
   return (
     <div className="row no-gutters fh">
       <div className="col-3 fh">
@@ -58,6 +63,7 @@ const ChatView = () => {
       <div className="col-9 fh">
         <ViewTitle text={`Joined Channel: ${activeChat?.name}`} />
         <ChatMessagesList />
+        <Messenger onSubmit={sendMessage} />
       </div>
     </div>
   );
