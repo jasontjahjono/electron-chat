@@ -52,7 +52,7 @@ const createChatReducer = () => {
   const activeMessages = createReducer({}, (builder) =>
     builder.addCase("CHATS_SET_MESSAGES", (state, action) => {
       const prevMessages = state[action.chatId] || [];
-      state[action.chatId] = [...prevMessages, ...action.newMessages];
+      state[action.chatId] = [...prevMessages, ...action.messagesWithAuthor];
     })
   );
 

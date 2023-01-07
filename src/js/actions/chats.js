@@ -69,13 +69,28 @@ export const sendChatMessage =
   };
 
 export const subscribeToMessages = (chatId) => (dispatch) => {
-  return api.subscribeToMessages(chatId, (changedMessages) => {
+  return api.subscribeToMessages(chatId, async (changedMessages) => {
     const newMessages = changedMessages.map((message) => {
       if (message.type === "added") {
         return { id: message.doc.id, ...message.doc.data() };
       }
     });
 
-    return dispatch({ type: "CHATS_SET_MESSAGES", newMessages, chatId });
+    const messagesWithAuthor = [];
+    const cache = {};
+
+    for await (let message of newMessages) {
+      if (cache[message.author.uid]) {
+        message.author = cache[message.author.id];
+      } else {
+        const userSnap = await getDoc(message.author);
+        const user = userSnap.data();
+        message.author = user;
+        cache[user.uid] = user;
+      }
+      messagesWithAuthor.push(message);
+    }
+
+    return dispatch({ type: "CHATS_SET_MESSAGES", messagesWithAuthor, chatId });
   });
 };
