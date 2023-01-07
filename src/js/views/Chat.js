@@ -9,6 +9,7 @@ import {
   subscribeToChat,
   subscribeToProfile,
   sendChatMessage,
+  subscribeToMessages,
 } from "../actions/chats";
 import Loading from "../components/shared/Loading";
 import Messenger from "../components/Messenger";
@@ -18,10 +19,12 @@ const ChatView = () => {
   const userWatchers = useRef({});
   const dispatch = useDispatch();
   const activeChat = useSelector(({ chats }) => chats.activeChats[id]);
+  const activeMessages = useSelector(({ chats }) => chats.activeMessages[id]);
   const joinedUsers = activeChat?.joinedUsers;
 
   useEffect(() => {
     const unsubFromChat = dispatch(subscribeToChat(id));
+    dispatch(subscribeToMessages(id));
     return () => {
       unsubFromChat();
       unsubFromJoinedUsers();
@@ -69,7 +72,7 @@ const ChatView = () => {
       </div>
       <div className="col-9 fh">
         <ViewTitle text={`Joined Channel: ${activeChat?.name}`} />
-        <ChatMessagesList />
+        <ChatMessagesList messages={activeMessages} />
         <Messenger onSubmit={sendMessage} />
       </div>
     </div>

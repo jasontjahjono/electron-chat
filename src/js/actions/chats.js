@@ -67,3 +67,15 @@ export const sendChatMessage =
     await api.sendChatMessage(newMessage, chatId);
     return dispatch({ type: "CHATS_MESSAGE_SENT" });
   };
+
+export const subscribeToMessages = (chatId) => (dispatch) => {
+  return api.subscribeToMessages(chatId, (changedMessages) => {
+    const newMessages = changedMessages.map((message) => {
+      if (message.type === "added") {
+        return { id: message.doc.id, ...message.doc.data() };
+      }
+    });
+
+    return dispatch({ type: "CHATS_SET_MESSAGES", newMessages, chatId });
+  });
+};
