@@ -25,6 +25,15 @@ const RequireAuth = ({ children }) => {
   return user ? children : <Navigate to="/" />;
 };
 
+const ContentWrapper = ({ children }) => {
+  const isDarkTheme = useSelector(({ settings }) => settings.isDarkTheme);
+  return (
+    <div className={`content-wrapper ${isDarkTheme ? "dark" : "light"}`}>
+      {children}
+    </div>
+  );
+};
+
 const ChatApp = () => {
   const dispatch = useDispatch();
   const isChecking = useSelector(({ auth }) => auth.isChecking);
@@ -63,7 +72,7 @@ const ChatApp = () => {
 
   return (
     <Router>
-      <div className="content-wrapper">
+      <ContentWrapper>
         <Routes>
           <Route path="/" element={<WelcomeView />} exact />
           <Route
@@ -103,7 +112,7 @@ const ChatApp = () => {
             exact
           />
         </Routes>
-      </div>
+      </ContentWrapper>
     </Router>
   );
 };
