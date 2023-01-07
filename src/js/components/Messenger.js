@@ -1,18 +1,32 @@
 import React, { useState } from "react";
+import { createTimestamp } from "../utils/time";
 
 const Messenger = ({ onSubmit }) => {
   const [value, setValue] = useState("");
-  const onSend = (e) => {
+  const onKeyPress = (e) => {
     if (e.key === "Enter") {
-      onSubmit(value);
+      sendMessage();
       setValue("");
       e.preventDefault();
     }
   };
+
+  const sendMessage = () => {
+    if (value.trim() === "") {
+      return;
+    }
+
+    const message = {
+      content: value.trim(),
+      timestamp: createTimestamp(),
+    };
+
+    onSubmit(message);
+  };
   return (
     <div className="chat-input form-group mt-3">
       <textarea
-        onKeyDown={onSend}
+        onKeyDown={onKeyPress}
         onChange={(e) => setValue(e.target.value)}
         value={value}
         className="form-control"
