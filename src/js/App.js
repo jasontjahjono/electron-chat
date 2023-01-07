@@ -18,6 +18,7 @@ import { listenToAuthChanges } from "./actions/auth";
 import Loading from "./components/shared/Loading";
 import { listenToConnectionChanges } from "./actions/app";
 import { checkUserConnection } from "./actions/connection";
+import { loadInitialSettings } from "./actions/settings";
 
 const RequireAuth = ({ children }) => {
   const user = useSelector(({ auth }) => auth.user);
@@ -31,6 +32,7 @@ const ChatApp = () => {
   const user = useSelector(({ auth }) => auth.user);
 
   useEffect(() => {
+    dispatch(loadInitialSettings());
     const unsubAuth = dispatch(listenToAuthChanges());
     const unsubConnection = dispatch(listenToConnectionChanges());
     return () => {
