@@ -51,12 +51,12 @@ const ChatApp = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    let unsubFromUserConnection = () => {};
+    let unsubFromUserConnection;
     if (user?.uid) {
       unsubFromUserConnection = dispatch(checkUserConnection(user.uid));
     }
     return () => {
-      unsubFromUserConnection();
+      unsubFromUserConnection && unsubFromUserConnection();
     };
   }, [dispatch, user]);
 
