@@ -6,8 +6,8 @@ import {
   updateDoc,
   doc,
   arrayUnion,
-  getDoc,
   onSnapshot,
+  setDoc,
 } from "firebase/firestore";
 
 export const fetchChats = async () => {
@@ -44,3 +44,8 @@ export const subscribeToChat = (chatId, onSubscribe) =>
 
 export const subscribeToProfile = (userId, onSubscribe) =>
   onSnapshot(doc(db, "profiles", userId), (user) => onSubscribe(user.data()));
+
+export const sendChatMessage = (message, chatId) => {
+  const messageRef = doc(db, "chats", chatId, "messages", message.timestamp);
+  return setDoc(messageRef, message);
+};

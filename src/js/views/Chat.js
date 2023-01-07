@@ -5,7 +5,11 @@ import ViewTitle from "../components/shared/ViewTitle";
 import { useParams } from "react-router-dom";
 import withBaseLayout from "../layouts/Base";
 import { useDispatch, useSelector } from "react-redux";
-import { subscribeToChat, subscribeToProfile } from "../actions/chats";
+import {
+  subscribeToChat,
+  subscribeToProfile,
+  sendChatMessage,
+} from "../actions/chats";
 import Loading from "../components/shared/Loading";
 import Messenger from "../components/Messenger";
 
@@ -47,13 +51,16 @@ const ChatView = () => {
     );
   }, [userWatchers.current]);
 
+  const sendMessage = useCallback(
+    (message) => {
+      dispatch(sendChatMessage(message, id));
+    },
+    [id]
+  );
+
   if (!activeChat?.id) {
     return <Loading message="Loading Chat" />;
   }
-
-  const sendMessage = (message) => {
-    alert(JSON.stringify(message));
-  };
 
   return (
     <div className="row no-gutters fh">
