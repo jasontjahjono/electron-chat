@@ -18,6 +18,7 @@ import Messenger from "../components/Messenger";
 const ChatView = () => {
   const { id } = useParams();
   const userWatchers = useRef({});
+  const messageList = useRef();
   const dispatch = useDispatch();
   const activeChat = useSelector(({ chats }) => chats.activeChats[id]);
   const activeMessages = useSelector(({ chats }) => chats.activeMessages[id]);
@@ -63,7 +64,9 @@ const ChatView = () => {
 
   const sendMessage = useCallback(
     (message) => {
-      dispatch(sendChatMessage(message, id));
+      dispatch(sendChatMessage(message, id)).then((_) =>
+        messageList.current.scrollIntoView(false)
+      );
     },
     [id]
   );
@@ -79,7 +82,7 @@ const ChatView = () => {
       </div>
       <div className="col-9 fh">
         <ViewTitle text={`Joined Channel: ${activeChat?.name}`} />
-        <ChatMessagesList messages={activeMessages} />
+        <ChatMessagesList messages={activeMessages} innerRef={messageList} />
         <Messenger onSubmit={sendMessage} />
       </div>
     </div>
