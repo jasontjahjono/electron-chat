@@ -94,3 +94,9 @@ export const subscribeToMessages = (chatId) => (dispatch) => {
     return dispatch({ type: "CHATS_SET_MESSAGES", messagesWithAuthor, chatId });
   });
 };
+
+export const registerMessageSubscription = (chatId, messageSub) => ({
+  type: "CHATS_REGISTER_MESSAGE_SUB",
+  sub: messageSub,
+  chatId,
+});

@@ -10,6 +10,7 @@ import {
   subscribeToProfile,
   sendChatMessage,
   subscribeToMessages,
+  registerMessageSubscription,
 } from "../actions/chats";
 import Loading from "../components/shared/Loading";
 import Messenger from "../components/Messenger";
@@ -21,10 +22,16 @@ const ChatView = () => {
   const activeChat = useSelector(({ chats }) => chats.activeChats[id]);
   const activeMessages = useSelector(({ chats }) => chats.activeMessages[id]);
   const joinedUsers = activeChat?.joinedUsers;
+  const messagesSub = useSelector(({ chats }) => chats.messagesSubs[id]);
 
   useEffect(() => {
     const unsubFromChat = dispatch(subscribeToChat(id));
-    dispatch(subscribeToMessages(id));
+
+    if (!messagesSub) {
+      const unsubFromMessages = dispatch(subscribeToMessages(id));
+      dispatch(registerMessageSubscription(id, unsubFromMessages));
+    }
+
     return () => {
       unsubFromChat();
       unsubFromJoinedUsers();
