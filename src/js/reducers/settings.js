@@ -4,6 +4,7 @@ const INITIAL_STATE = {
   isDarkTheme: false,
   playSound: true,
   showNotifications: true,
+  savable: true,
 };
 
 const settingsReducer = (state = INITIAL_STATE, action) => {

@@ -49,6 +49,10 @@ ipcMain.on("notify", (_, message) => {
   new Notification({ title: "Custom Notif", body: message }).show();
 });
 
+ipcMain.on("app-quit", () => {
+  app.quit();
+});
+
 // Webpack -> is a module builder to bundle JS files for usage
 // in the browser
 
