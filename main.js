@@ -8,7 +8,7 @@ function createWindow() {
   const win = new BrowserWindow({
     width: 1000,
     height: 800,
-    backgroundColor: "white",
+    backgroundColor: "#6e707e",
     webPreferences: {
       nodeIntegration: false,
       // contextIsolation is a feature that ensures that both
