@@ -3,6 +3,8 @@ const { app, BrowserWindow, ipcMain, Notification, Menu } = require("electron");
 const path = require("path");
 const isDev = !app.isPackaged;
 
+const dockIcon = path.join(__dirname, "assets", "images", "react_app_logo.png");
+
 function createWindow() {
   // Browser Window -> Renderer Process
   const win = new BrowserWindow({
@@ -47,6 +49,10 @@ if (isDev) {
   require("electron-reload")(__dirname, {
     electron: path.join(__dirname, "node_modules", ".bin", "electron"),
   });
+}
+
+if (process.platform === "darwin") {
+  app.dock.setIcon(dockIcon);
 }
 
 app.whenReady().then(() => {
