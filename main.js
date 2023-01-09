@@ -1,5 +1,5 @@
 // Main Process
-const { app, BrowserWindow, ipcMain, Notification } = require("electron");
+const { app, BrowserWindow, ipcMain, Notification, Menu } = require("electron");
 const path = require("path");
 const isDev = !app.isPackaged;
 
@@ -31,7 +31,12 @@ if (isDev) {
   });
 }
 
-app.whenReady().then(createWindow);
+app.whenReady().then(() => {
+  const template = require("./utils/Menu").createTemplate(app);
+  const menu = Menu.buildFromTemplate(template);
+  Menu.setApplicationMenu(menu);
+  createWindow();
+});
 
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
