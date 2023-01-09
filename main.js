@@ -25,6 +25,24 @@ function createWindow() {
   isDev && win.webContents.openDevTools();
 }
 
+function createSecondWindow() {
+  // Browser Window -> Renderer Process
+  const win = new BrowserWindow({
+    width: 1000,
+    height: 800,
+    backgroundColor: "#6e707e",
+    webPreferences: {
+      nodeIntegration: false,
+      // contextIsolation is a feature that ensures that both
+      // preload scripts and Electrons internal logic run in
+      // separate context
+      contextIsolation: true,
+    },
+  });
+
+  win.loadFile("second.html");
+}
+
 if (isDev) {
   require("electron-reload")(__dirname, {
     electron: path.join(__dirname, "node_modules", ".bin", "electron"),
@@ -36,6 +54,7 @@ app.whenReady().then(() => {
   const menu = Menu.buildFromTemplate(template);
   Menu.setApplicationMenu(menu);
   createWindow();
+  createSecondWindow();
 });
 
 app.on("window-all-closed", () => {
