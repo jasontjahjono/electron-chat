@@ -5,14 +5,16 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "watch": "webpack --config webpack.common.js --watch"
+    "watch": "webpack --config webpack.common.js --watch",
+    "build": "webpack --config webpack.prod.js"
   },
   "author": "Jason Tjahjono",
   "license": "ISC",
   "devDependencies": {
     "dotenv-webpack": "^8.0.1",
     "electron": "^22.0.0",
-    "electron-reload": "^2.0.0-alpha.1"
+    "electron-reload": "^2.0.0-alpha.1",
+    "webpack-merge": "^5.8.0"
   },
   "dependencies": {
     "@babel/preset-env": "^7.20.2",
