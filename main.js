@@ -19,6 +19,7 @@ function createWindow() {
     width: 1000,
     height: 800,
     backgroundColor: "#6e707e",
+    show: false,
     webPreferences: {
       nodeIntegration: false,
       // contextIsolation is a feature that ensures that both
@@ -33,14 +34,16 @@ function createWindow() {
 
   // open dev tools
   isDev && win.webContents.openDevTools();
+  return win;
 }
 
-function createSecondWindow() {
+function createSplashWindow() {
   // Browser Window -> Renderer Process
   const win = new BrowserWindow({
-    width: 1000,
-    height: 800,
-    backgroundColor: "#6e707e",
+    width: 400,
+    height: 200,
+    frame: false,
+    transparent: true,
     webPreferences: {
       nodeIntegration: false,
       // contextIsolation is a feature that ensures that both
@@ -50,7 +53,8 @@ function createSecondWindow() {
     },
   });
 
-  win.loadFile("second.html");
+  win.loadFile("splash.html");
+  return win;
 }
 
 if (isDev) {
@@ -72,8 +76,15 @@ app.whenReady().then(() => {
   tray = new Tray(trayIcon);
   tray.setContextMenu(menu);
 
-  createWindow();
-  createSecondWindow();
+  const mainApp = createWindow();
+  const splash = createSplashWindow();
+
+  mainApp.once("ready-to-show", () => {
+    setTimeout(() => {
+      splash.destroy();
+      mainApp.show();
+    }, 2000);
+  });
 });
 
 app.on("window-all-closed", () => {
