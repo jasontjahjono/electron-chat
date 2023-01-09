@@ -1,9 +1,17 @@
 // Main Process
-const { app, BrowserWindow, ipcMain, Notification, Menu } = require("electron");
+const {
+  app,
+  BrowserWindow,
+  ipcMain,
+  Notification,
+  Menu,
+  Tray,
+} = require("electron");
 const path = require("path");
 const isDev = !app.isPackaged;
 
 const dockIcon = path.join(__dirname, "assets", "images", "react_app_logo.png");
+const trayIcon = path.join(__dirname, "assets", "images", "react_icon.png");
 
 function createWindow() {
   // Browser Window -> Renderer Process
@@ -55,10 +63,15 @@ if (process.platform === "darwin") {
   app.dock.setIcon(dockIcon);
 }
 
+let tray = null;
 app.whenReady().then(() => {
   const template = require("./utils/Menu").createTemplate(app);
   const menu = Menu.buildFromTemplate(template);
   Menu.setApplicationMenu(menu);
+
+  tray = new Tray(trayIcon);
+  tray.setContextMenu(menu);
+
   createWindow();
   createSecondWindow();
 });
